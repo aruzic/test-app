@@ -25,7 +25,6 @@ namespace test_app.Data
                         IsRead = true,
                         DateRead = DateTime.Now.AddDays(-10),
                         Genre = "Biography",
-                        Author = "First Author",
                         CoverUrl = "https....",
                         DateAdded = DateTime.Now
                     },
@@ -35,7 +34,6 @@ namespace test_app.Data
                         Description = "2st Book Description",
                         IsRead = false,
                         Genre = "Biography",
-                        Author = "First Author",
                         CoverUrl = "https....",
                         DateAdded = DateTime.Now
                     });
@@ -59,6 +57,7 @@ namespace test_app.Data
                     context.SaveChanges();
                 }
             }
+            
+            }
         }
-    }
 }

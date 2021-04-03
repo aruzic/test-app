@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using test_app.Data;
 using Microsoft.EntityFrameworkCore;
 using test_app.Data.Services;
+using Microsoft.OpenApi.Models;
 
 namespace test_app
 {
@@ -28,12 +29,19 @@ namespace test_app
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "test-app", Version = "v1" });
+            });
 
             //Configure DBContext with SQL
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString)); //umjesto Sql staviti PostgreSQL
 
             //Configure the Services
             services.AddTransient<BooksService>();  //dodali smo BookService
+            services.AddTransient<AuthorsService>();
+            services.AddTransient<PublishersService>();
 
         }
 
@@ -43,19 +51,18 @@ namespace test_app
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "test-app v1"));
             }
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-
-                DbSeeder.Seed(app); //app iz parametra - line:36
+                endpoints.MapControllers();
             });
+
+            //DbSeeder.Seed(app);
         }
     }
 }

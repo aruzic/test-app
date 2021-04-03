@@ -13,7 +13,11 @@ namespace test_app.Data.ViewModels
         public DateTime? DateRead { get; set; }
         public int? Rate { get; set; }
         public string Genre { get; set; }
-        public string Author { get; set; }
         public string CoverUrl { get; set; }
+
+
+        public int PublisherId { get; set; }
+        public List<int> AuthorIds { get; set; } 
+        //List jer cemo ponuditi da se Book spremi u pivot tablicu Book_Authors, knjiga može imati više autora.
     }
 }

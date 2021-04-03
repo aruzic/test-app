@@ -9,7 +9,7 @@ using test_app.Data.ViewModels;
 
 namespace test_app.Controller
 {
-    [Route("api/[controller]")] //localhost:xxxx/api/books/api-endpoint-name
+    [Route("api/[controller]")] //localhost:xxxx/api/Books/api-endpoint-name
     [ApiController] //može biti i MVC controller
     public class BooksController : ControllerBase
     {
@@ -20,10 +20,38 @@ namespace test_app.Controller
             _booksService = booksService;
         }
 
-        [HttpPost("add-book")]
+        [HttpGet("get-all-books")]
+        public IActionResult GetAllBooks()
+        {
+            var allBooks = _booksService.GetAllBooks();
+            return Ok(allBooks);
+        }
+
+        [HttpGet("get-book-by-id/{id}")]
+        public IActionResult GetBookById(int id)
+        {
+            var book = _booksService.GetBookById(id);
+            return Ok(book);
+        }
+
+        [HttpPost("add-book-with-authors")]
         public IActionResult AddBook([FromBody]BookVM book)
         {
-            _booksService.AddBook(book);
+            _booksService.AddBookWithAuthors(book);
+            return Ok();
+        }
+
+        [HttpPut("update-book-by-id/{id}")]
+        public IActionResult UpdateBookById(int id, [FromBody]BookVM book)
+        {
+            var updateBook = _booksService.UpdateBookById(id, book);
+            return Ok(updateBook);
+        }
+
+        [HttpDelete("delete-book-by-id/{id}")]
+        public IActionResult DeleteBookById(int id)
+        {
+            _booksService.DeleteBookById(id);
             return Ok();
         }
     }
